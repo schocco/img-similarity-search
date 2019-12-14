@@ -1,0 +1,17 @@
+{
+  "name": "elastic-paintings-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "tasks.max": "1",
+    "topics": "paintings",
+    "connection.url": "http://elasticsearch:9200",
+    "type.name": "_doc",
+    "name": "elastic-paintings-connector",
+    "schema.ignore": "true",
+    "topic.schema.ignore": "paintings",
+    "auto.create.indices.at.start": "false",
+    "transforms": "ExtractField",
+    "transforms.ExtractField.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.ExtractField.field": "filename"
+  }
+}

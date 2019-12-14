@@ -1,0 +1,72 @@
+[
+  {
+    "namespace": "schocco.painting",
+    "type": "record",
+    "name": "VectorFeatures",
+    "fields": [
+      {
+        "name": "usedModel",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "genre1024",
+        "type": {"type": "array", "items": "float"}
+      },
+      {
+        "name": "style1024",
+        "type": {"type": "array", "items": "float"}
+      },
+      {
+        "name": "common1024",
+        "type": {"type": "array", "items": "float"}
+      }
+    ]
+  },
+  {
+    "namespace": "schocco.painting",
+    "type": "record",
+    "name": "Painting",
+    "fields": [
+      {
+        "name": "filename",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "genre",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "date",
+        "type": "string",
+        "avro.java.string": ["String", "null"]
+      },
+      {
+        "name": "style",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "artist",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "sha1sum",
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      {
+        "name": "vectorFeatures",
+        "type": ["VectorFeatures", "null"]
+      }
+    ]
+  }
+]
