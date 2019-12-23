@@ -14,7 +14,15 @@
         "type": {"type": "array", "items": "float"}
       },
       {
+        "name": "genre512",
+        "type": {"type": "array", "items": "float"}
+      },
+      {
         "name": "style1024",
+        "type": {"type": "array", "items": "float"}
+      },
+      {
+        "name": "style512",
         "type": {"type": "array", "items": "float"}
       },
       {

@@ -76,6 +76,14 @@
                 "type": "dense_vector",
                 "dims": 1024
               },
+              "genre512": {
+                "type": "dense_vector",
+                "dims": 512
+              },
+              "style512": {
+                "type": "dense_vector",
+                "dims": 512
+              },
               "common1024": {
                 "type": "dense_vector",
                 "dims": 1024

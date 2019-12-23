@@ -10,7 +10,7 @@ POC for similarity search by abstract features
    docker exec -it kafka /bin/bash
    kafka-topics --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 2 --topic paintings
    ```
-4. Create the Elastic Connector for th epaintings topic
+4. Create the Elastic Connector for the paintings topic
    ```bash
    curl -X POST -H "Content-Type: application/json" -d @paintings.connector.json localhost:8083/connectors
    ```
@@ -19,3 +19,4 @@ POC for similarity search by abstract features
    ```
    curl -X PUT "localhost:9200/paintings?pretty" -H 'Content-Type: application/json' -d @paintings.mapping.json
    ```
+7. Run the python script to process all images and submit image representations in kafka
