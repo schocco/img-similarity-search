@@ -84,9 +84,9 @@
                 "type": "dense_vector",
                 "dims": 512
               },
-              "common1024": {
+              "common512": {
                 "type": "dense_vector",
-                "dims": 1024
+                "dims": 512
               },
               "usedModel": {
                 "type": "text",

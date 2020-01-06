@@ -26,7 +26,7 @@
         "type": {"type": "array", "items": "float"}
       },
       {
-        "name": "common1024",
+        "name": "common512",
         "type": {"type": "array", "items": "float"}
       }
     ]
@@ -53,8 +53,8 @@
       },
       {
         "name": "date",
-        "type": "string",
-        "avro.java.string": ["String", "null"]
+        "type": ["string", "null"],
+        "avro.java.string": "String"
       },
       {
         "name": "style",

@@ -29,21 +29,22 @@ def main(img_path, img_csv):
     kafka_client = KafkaClient()
     img_loader = ImgLoader(dim=model.img_size, directory=img_path)
     df = pd.read_csv(img_csv)
+    df.dropna(subset=['genre', 'style'], inplace=True)
 
     for indexes in batched(16, df.index):
         df_batch = df.loc[indexes]
         imgs = [img_loader.get_resized_img(file) for file in df_batch['filename'].values]
         vectors = model.vectorize(imgs)
         for k, v in vectors.items():
-            df_batch[k] = pd.Series(tuple(vector) for vector in v)
+            df_batch[k] = pd.Series(data=[list(vector) for vector in v], index=indexes)
         for index, row in df_batch.iterrows():
             vector_features = {
                 "usedModel": 'v1',
-                "genre512": row['genre_512'],
-                "genre1024": row['genre_1024'],
-                "style512": row['style_512'],
-                "style1024": row['style_1024'],
-                "common1024": row['block4_dense']
+                "genre512": [float(f) for f in row['genre_512']],
+                "genre1024": [float(f) for f in row['genre_1024']],
+                "style512": [float(f) for f in row['style_512']],
+                "style1024": [float(f) for f in row['style_1024']],
+                "common512": [float(f) for f in row['block4_dense']]
             }
             image = VectorizedImage(filename=row['filename'],
                                     genre=row['genre'],
