@@ -19,4 +19,7 @@ POC for similarity search by abstract features
    ```
    curl -X PUT "localhost:9200/paintings?pretty" -H 'Content-Type: application/json' -d @paintings.mapping.json
    ```
-7. Run the python script to process all images and submit image representations in kafka
+7. Run the python script to process all images and submit image representations in kafka  
+   The sink connector will ensure that processed records are store din the previously created elasticsearch index
+   
+8. Open the website and browser the paintings
