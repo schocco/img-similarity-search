@@ -1,0 +1,21 @@
+<div fxLayout="row">
+  <mat-card fxFlex="100">
+    <mat-card-header>
+      <mat-card-title>Painting Name</mat-card-title>
+      <mat-card-subtitle>Genre and Style</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="/paintings/5603.jpg" alt="Painting">
+    <mat-card-content>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <h3 class="mat-title">Paintings with similar style</h3>
+      </div>
+      <div fxLayoutGap="1em" fxLayout="row wrap" fxLayoutAlign="center">
+        <app-gallery-item fxFlex="22" *ngFor="let i of [1,2,3,4]"></app-gallery-item>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+
+
