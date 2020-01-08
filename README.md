@@ -4,7 +4,8 @@ POC for similarity search by abstract features
 ## Setup
 
 1. Download paintings-by-numbers from kaggle
-2. Create a volume with the downloaded paintings  `docker volume create --opt device=~/Downloads/art-classification/painter-by-numbers/train --opt o=bind paintings`
+2. Create a volume with the downloaded paintings 
+   `docker volume create -d local --opt device=~/art-classification/painter-by-numbers/train --opt o=bind --opt type=none paintings`
 3. create a topic for the images:
    ```
    docker exec -it kafka /bin/bash
