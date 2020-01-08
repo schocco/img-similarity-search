@@ -1,9 +1,6 @@
 package similaritysearch.paintings
 
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RequestMapping("/api/paintings")
@@ -15,8 +12,13 @@ class PaintingsController(val paintingsRepository: PaintingsRepository) {
         return paintingsRepository.samplePaintings()
     }
 
+    @GetMapping("{paintingId}")
+    fun painting(@PathVariable paintingId: String): Mono<Painting> {
+        return paintingsRepository.getPaintingById(paintingId)
+    }
+
     @GetMapping("{paintingId}/similar-paintings")
-    fun similarPaintings(@PathVariable paintingId: String): Mono<List<Painting>> {
-        return paintingsRepository.findSimilarPaintings(paintingId)
+    fun similarPaintings(@PathVariable paintingId: String, @RequestParam feature: String): Mono<List<Painting>> {
+        return paintingsRepository.findSimilarPaintings(paintingId, feature)
     }
 }

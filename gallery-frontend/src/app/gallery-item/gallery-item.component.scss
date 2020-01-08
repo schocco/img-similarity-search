@@ -1,0 +1,14 @@
+.center-cropped {
+  object-fit: cover;
+  height: 300px;
+}
+
+.one-line-title {
+  mat-card-title {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  display: flow-root;
+}

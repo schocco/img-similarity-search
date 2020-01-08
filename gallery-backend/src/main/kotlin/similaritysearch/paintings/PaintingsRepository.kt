@@ -3,6 +3,7 @@ package similaritysearch.paintings
 import org.apache.http.HttpHost
 import org.elasticsearch.action.ActionListener
 import org.elasticsearch.action.get.GetRequest
+import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.client.RequestOptions
@@ -38,34 +39,59 @@ class PaintingsRepository {
             val listener: ActionListener<SearchResponse> = createListener(it)
             client.searchAsync(searchRequest, RequestOptions.DEFAULT, listener)
         }
+    }
 
+    fun getPaintingById(paintingId: String): Mono<Painting> {
+        return Mono.create { monoSink ->
+            val listener = object : ActionListener<GetResponse> {
+                override fun onResponse(getResponse: GetResponse) {
+                    val map = getResponse.source["Painting"] as Map<*, *>
+                    monoSink.success(Painting(
+                            id = paintingId,
+                            title = map.getOrDefault("title", "") as String,
+                            date = map["date"] as String?,
+                            artist = map.getOrDefault("artist", "") as String,
+                            genre = map.getOrDefault("genre", "") as String,
+                            style = map.getOrDefault("style", "") as String,
+                            score = 1.0))
+                }
 
+                override fun onFailure(e: Exception) {
+                    monoSink.error(e)
+                }
+
+            }
+            val getResponse = client.getAsync(GetRequest(PAINTINGS_INDEX, paintingId), RequestOptions.DEFAULT, listener)
+
+        }
     }
 
 
-    fun findSimilarPaintings(paintingId: String): Mono<List<Painting>> {
+    fun findSimilarPaintings(paintingId: String, vectorType: String): Mono<List<Painting>> {
         return Mono.create {
             val getResponse = client.get(GetRequest(PAINTINGS_INDEX, paintingId), RequestOptions.DEFAULT)
             if (getResponse.isSourceEmpty) {
                 it.success(emptyList())
             }
-            val vectorType = "genre512"
             val painting = getResponse.source.get("Painting") as Map<*, *>
             val knownVector: List<Double> = (painting["vectorFeatures"] as Map<*, *>)[vectorType] as List<Double>
-            if(knownVector.all { value -> value == 0.0 }) {
+            if (knownVector.none { value -> value > 0 }) {
                 it.error(IllegalArgumentException("query vector is all zeros"))
+                return@create
             }
             val script = Script(
                     ScriptType.INLINE,
                     DEFAULT_SCRIPT_LANG,
-                    "cosineSimilarity(params.queryVector, doc['Painting.vectorFeatures.$vectorType']) + 1.0",
+                    """double score = cosineSimilarity(params.queryVector, doc['Painting.vectorFeatures.$vectorType']) + 1.0;
+                       score >= 0 ? score : 0
+                    """.trimIndent(),
                     mapOf("queryVector" to knownVector))
             val searchRequest = SearchRequest()
                     .indices(PAINTINGS_INDEX)
                     .source(
                             SearchSourceBuilder.searchSource()
                                     .query(scriptScoreQuery(QueryBuilders.boolQuery()
-                                            .mustNot(matchQuery("_id", getResponse.id))
+                                            .mustNot(matchQuery("_id", paintingId))
                                             .must(existsQuery("Painting.vectorFeatures.$vectorType"))
                                             , script))
                                     .size(NUM_RESULTS)
@@ -85,7 +111,8 @@ class PaintingsRepository {
             val map = hit.sourceAsMap["Painting"] as Map<*, *>
             return Painting(
                     id = hit.id as String,
-                    name = map.getOrDefault("name", "") as String,
+                    title = map.getOrDefault("title", "") as String,
+                    date = map["date"] as String?,
                     artist = map.getOrDefault("artist", "") as String,
                     genre = map.getOrDefault("genre", "") as String,
                     style = map.getOrDefault("style", "") as String,

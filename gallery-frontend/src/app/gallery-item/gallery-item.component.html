@@ -1,10 +1,10 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Painting Name</mat-card-title>
-    <mat-card-subtitle>Genre and Style</mat-card-subtitle>
+<mat-card *ngIf="painting">
+  <mat-card-header class="one-line-title">
+    <mat-card-title>{{ painting.title }}</mat-card-title>
+    <mat-card-subtitle>{{ painting.genre}} / {{ painting.style }} / {{ painting.date }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="/paintings/5603.jpg" alt="Painting">
+  <img class="center-cropped" mat-card-image src="/paintings/{{ painting.id }}" alt="{{ painting.title }}">
   <mat-card-actions>
-    <button routerLink="5603.jpg" mat-button>OPEN</button>
+    <button routerLink="/{{ painting.id }}" mat-button>OPEN</button>
   </mat-card-actions>
 </mat-card>

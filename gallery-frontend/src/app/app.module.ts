@@ -10,6 +10,11 @@ import { PaintingDetailComponent } from './painting-detail/painting-detail.compo
 import {FlexLayoutModule} from "@angular/flex-layout";
 import {MatButtonModule} from "@angular/material/button";
 import { GalleryItemComponent } from './gallery-item/gallery-item.component';
+import {HttpClientModule} from "@angular/common/http";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatRadioModule} from "@angular/material/radio";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -24,7 +29,10 @@ import { GalleryItemComponent } from './gallery-item/gallery-item.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
-    MatButtonModule
+    HttpClientModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

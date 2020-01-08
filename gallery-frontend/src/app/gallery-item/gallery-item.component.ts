@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {Painting} from "../painting.model";
 
 @Component({
   selector: 'app-gallery-item',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gallery-item.component.scss']
 })
 export class GalleryItemComponent implements OnInit {
+
+  @Input()
+  public painting: Painting;
 
   constructor() { }
 

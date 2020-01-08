@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {PaintingService} from "../painting.service";
+import {Observable} from "rxjs";
+import {Painting} from "../painting.model";
 
 @Component({
   selector: 'app-gallery',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GalleryComponent implements OnInit {
 
-  constructor() { }
+  private paintings: Observable<Painting>;
+
+  constructor(private paintingService: PaintingService) {
+  }
 
   ngOnInit() {
+    this.paintings = this.paintingService.findPaintings();
   }
 
 }

@@ -1,3 +1,8 @@
-<div fxLayout="row wrap" fxLayoutGap="1em">
-  <app-gallery-item fxFlex="22" *ngFor="let i of [1,2,3,4,5,6]"></app-gallery-item>
+<div fxLayout="row wrap" fxLayoutGap="1em grid">
+  <app-gallery-item
+    fxFlex="calc(50% - 1em)"
+    fxFlex.gt-sm="calc(25% - 1em)"
+    *ngFor="let painting of paintings | async"
+    [painting]="painting">
+  </app-gallery-item>
 </div>
