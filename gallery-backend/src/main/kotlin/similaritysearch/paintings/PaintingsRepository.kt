@@ -68,6 +68,10 @@ class PaintingsRepository {
 
 
     fun findSimilarPaintings(paintingId: String, vectorType: String): Mono<List<Painting>> {
+        val cosineSimilarityScript = """double score = cosineSimilarity(params.queryVector, doc['Painting.vectorFeatures.$vectorType']) + 1.0;
+                       score >= 0 ? score : 0
+                    """.trimIndent()
+        val l2normScript = "double score = 1 / (1 + l2norm(params.queryVector, doc['Painting.vectorFeatures.$vectorType'])); score >= 0 ? score : 0"
         return Mono.create {
             val getResponse = client.get(GetRequest(PAINTINGS_INDEX, paintingId), RequestOptions.DEFAULT)
             if (getResponse.isSourceEmpty) {
@@ -82,9 +86,7 @@ class PaintingsRepository {
             val script = Script(
                     ScriptType.INLINE,
                     DEFAULT_SCRIPT_LANG,
-                    """double score = cosineSimilarity(params.queryVector, doc['Painting.vectorFeatures.$vectorType']) + 1.0;
-                       score >= 0 ? score : 0
-                    """.trimIndent(),
+                    l2normScript,
                     mapOf("queryVector" to knownVector))
             val searchRequest = SearchRequest()
                     .indices(PAINTINGS_INDEX)
