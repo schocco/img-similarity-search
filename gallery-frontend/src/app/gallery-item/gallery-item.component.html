@@ -1,7 +1,9 @@
 <mat-card *ngIf="painting">
   <mat-card-header class="one-line-title">
     <mat-card-title>{{ painting.title }}</mat-card-title>
-    <mat-card-subtitle>{{ painting.genre}} / {{ painting.style }} / {{ painting.date }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      <span *ngIf="showScore">Score: {{ painting.score }}<br></span>
+      {{ painting.genre}} / {{ painting.style }} / {{ painting.date }}</mat-card-subtitle>
   </mat-card-header>
   <img class="center-cropped" mat-card-image src="/paintings/{{ painting.id }}" alt="{{ painting.title }}">
   <mat-card-actions>

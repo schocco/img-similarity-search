@@ -16,6 +16,8 @@ import org.elasticsearch.script.Script.DEFAULT_SCRIPT_LANG
 import org.elasticsearch.script.ScriptType
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 import reactor.core.publisher.MonoSink
@@ -98,6 +100,7 @@ class PaintingsRepository {
     companion object {
         private const val PAINTINGS_INDEX = "paintings"
         private const val NUM_RESULTS = 16
+        private val LOGGER : Logger = LoggerFactory.getLogger(PaintingsRepository::class.java)
 
         private fun mapToPainting(hit: SearchHit): Painting {
             val map = hit.sourceAsMap["Painting"] as Map<*, *>
@@ -127,6 +130,7 @@ class PaintingsRepository {
         private fun createSearchListener(monoSink: MonoSink<List<Painting>>): ActionListener<SearchResponse> {
             return object : ActionListener<SearchResponse> {
                 override fun onResponse(searchResponse: SearchResponse) {
+                    LOGGER.info("Query took ${searchResponse.took.millis} ms")
                     monoSink.success(searchResponse.hits.map(::mapToPainting))
                 }
 

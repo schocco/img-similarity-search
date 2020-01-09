@@ -11,6 +11,9 @@ export class GalleryItemComponent implements OnInit {
   @Input()
   public painting: Painting;
 
+  @Input()
+  public showScore: boolean = false;
+
   constructor() { }
 
   ngOnInit() {

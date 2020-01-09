@@ -17,6 +17,7 @@
       </div>
       <div fxLayoutGap="1em grid" fxLayout="row wrap" fxLayoutAlign="center">
         <app-gallery-item [painting]="painting"
+                          showScore="true"
                           fxFlex="calc(50% - 1em)"
                           fxFlex.gt-sm="calc(25% - 1em)"
                           *ngFor="let painting of similar$ | async">
