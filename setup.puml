@@ -1,0 +1,25 @@
+@startuml
+
+!define SPRITESURL https://raw.githubusercontent.com/rabelenda/cicon-plantuml-sprites/v1.0/sprites
+!includeurl SPRITESURL/kafka.puml
+!includeurl SPRITESURL/python.puml
+!includeurl SPRITESURL/java.puml
+!includeurl SPRITESURL/elasticsearch.puml
+!includeurl SPRITESURL/java.puml
+
+title System components\n
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+rectangle "<$python>\nimg vectorizer" as py
+rectangle "<$kafka>\nKafka" as Kafka
+rectangle "<$kafka>\nES Sink" as kafkasink
+rectangle "<$elasticsearch>\nElasticsearch" as Elasticsearch
+rectangle "<$java>\nGallery App" as Gallery
+
+[py] --> [Kafka]
+[Kafka] -> [kafkasink]
+[kafkasink] -> [Elasticsearch]
+[Gallery] --> [Elasticsearch]
+
+@enduml

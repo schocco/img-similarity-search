@@ -1,6 +1,8 @@
 # img-similarity-search
 POC for similarity search by abstract features
 
+![components.png](components.png)
+
 ## Setup
 
 1. Download paintings-by-numbers from kaggle
