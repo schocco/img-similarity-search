@@ -11,6 +11,7 @@ import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.QueryBuilders
 import org.elasticsearch.index.query.QueryBuilders.*
+import org.elasticsearch.index.query.functionscore.RandomScoreFunctionBuilder
 import org.elasticsearch.script.Script
 import org.elasticsearch.script.Script.DEFAULT_SCRIPT_LANG
 import org.elasticsearch.script.ScriptType
@@ -36,7 +37,8 @@ class PaintingsRepository {
         return Mono.create {
             val searchRequest = SearchRequest().indices(PAINTINGS_INDEX)
             val searchSourceBuilder = SearchSourceBuilder()
-            searchSourceBuilder.query(QueryBuilders.matchAllQuery()).size(100).docValueField("Painting")
+            val functionScoreQuery = QueryBuilders.functionScoreQuery(RandomScoreFunctionBuilder())
+            searchSourceBuilder.query(functionScoreQuery).size(40).docValueField("Painting")
             searchRequest.source(searchSourceBuilder)
             val listener: ActionListener<SearchResponse> = createSearchListener(it)
             client.searchAsync(searchRequest, RequestOptions.DEFAULT, listener)
@@ -100,7 +102,7 @@ class PaintingsRepository {
     companion object {
         private const val PAINTINGS_INDEX = "paintings"
         private const val NUM_RESULTS = 16
-        private val LOGGER : Logger = LoggerFactory.getLogger(PaintingsRepository::class.java)
+        private val LOGGER: Logger = LoggerFactory.getLogger(PaintingsRepository::class.java)
 
         private fun mapToPainting(hit: SearchHit): Painting {
             val map = hit.sourceAsMap["Painting"] as Map<*, *>
