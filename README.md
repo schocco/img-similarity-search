@@ -1,7 +1,11 @@
-# img-similarity-search
-POC for similarity search by abstract features
+# Image Similarity Search
+POC for similarity search by abstract features.  
 
 ![components.png](components.png)
+
+An image vectorizer (a convolutional neural network which was trained to classify genre/style of paintings) is used to extract different vector representations from approx 75'000 paintings.
+The image metadata and extracted vectors are indexed in elasticsearch.  
+Clients can search for similar paintings by letting elasticsearch compute vector similarity using either cosine similarity or l2 normalization.
 
 ## Setup
 
@@ -25,4 +29,12 @@ POC for similarity search by abstract features
 7. Run the python script to process all images and submit image representations in kafka  
    The sink connector will ensure that processed records are store din the previously created elasticsearch index
    
-8. Open the website and browser the paintings
+8. Run the gallery-backend (`mvn spring-boot:run`)
+9. Run the gallery-frontend (`nvm use && npm install && npm start`)
+9. Open http://localhost:4200/ to see the result
+
+## References
+
+- https://www.elastic.co/guide/en/elasticsearch/reference/7.5/dense-vector.html
+- https://docs.confluent.io/current/connect/kafka-connect-elasticsearch/index.html
+- https://keras.io/applications/ 
